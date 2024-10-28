@@ -29,7 +29,7 @@ CREATE TABLE Trecos (
     descricao TEXT NOT NULL,
     localizacao VARCHAR(255) NOT NULL,
     status ENUM('on', 'off', 'del') DEFAULT 'on',
-    user_id INT,
+    user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES Users(id)
 );
 
