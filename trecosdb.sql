@@ -4,7 +4,7 @@ DROP DATABASE IF EXISTS trecosdb;
 -- Cria o banco de dados `trecosdb`
 CREATE DATABASE trecosdb
     CHARACTER SET utf8mb4
-    COLLATE utf8mb4_general_ci;
+    COLLATE utf8mb4_unicode_ci;
 
 -- Seleciona o banco de dados `trecosdb`
 USE trecosdb;
@@ -12,6 +12,7 @@ USE trecosdb;
 -- Criação da tabela `Users`
 CREATE TABLE Users (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     data_nascimento DATE NOT NULL,
     nome VARCHAR(127) NOT NULL,
     email VARCHAR(127) NOT NULL,
@@ -24,7 +25,7 @@ CREATE TABLE Trecos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     data TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     foto VARCHAR(255),
-    nome VARCHAR (255) NOT NULL,
+    nome VARCHAR (127) NOT NULL,
     descricao TEXT NOT NULL,
     localizacao VARCHAR(255) NOT NULL,
     status ENUM('on', 'off', 'del') DEFAULT 'on',
@@ -39,7 +40,7 @@ INSERT INTO Users (
     email,
     senha
     ) VALUES (
-    '2000-28-02',
+    '2000-02-28',
     'Álefe',
     'emailmeu@hotmail.com',
     SHA1('123456')
