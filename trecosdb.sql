@@ -1,11 +1,15 @@
+-- Certifica-se de que o banco de dados `trecosdb` será excluído, caso já exista
 DROP DATABASE IF EXISTS trecosdb;
 
+-- Cria o banco de dados `trecosdb`
 CREATE DATABASE trecosdb
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_general_ci;
 
+-- Seleciona o banco de dados `trecosdb`
 USE trecosdb;
 
+-- Criação da tabela `Users`
 CREATE TABLE Users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     data_nascimento DATE NOT NULL,
@@ -15,24 +19,25 @@ CREATE TABLE Users (
     status ENUM('on', 'off', 'del') DEFAULT 'on'
 );
 
+-- Criação da tabela `Trecos`
 CREATE TABLE Trecos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     data TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     foto VARCHAR(255),
     nome VARCHAR (255) NOT NULL,
-    descricao TEXT,
-    localizacao VARCHAR(255),
+    descricao TEXT NOT NULL,
+    localizacao VARCHAR(255) NOT NULL,
     status ENUM('on', 'off', 'del') DEFAULT 'on',
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES Users(id)
 );
 
+-- Insere dados em `Users` e em `Trecos`
 INSERT INTO Users (
     data_nascimento,
     nome,
     email,
     senha
-
     ) VALUES (
         '2000-28-02',
         'Álefe',
@@ -41,14 +46,12 @@ INSERT INTO Users (
     );
 
 INSERT INTO Trecos (
-    data,
     foto,
     nome,
     descricao,
     localizacao,
     user_id
     ) VALUES (
-        CURRENT_DATE,
         'foto.jpg',
         'Treco Legal',
         'Descrição do treco',
@@ -64,14 +67,14 @@ SELECT * FROM Trecos
 SELECT * FROM Trecos
     WHERE id = 1;
 
--- Edita o item
+-- Edição do item 1
 UPDATE Trecos
     SET nome = 'Treco muito mais legal',
     descricao = 'Esse treco é muito mais legal',
     status = 'off'
     WHERE id = 1;
 
--- Apaga o item
+-- Apaga o item 1
 DELETE FROM Trecos
     WHERE id = 1;
 
@@ -81,7 +84,6 @@ INSERT INTO Users (
 	nome,
 	email,
 	senha
-
 	) VALUES (
         '2003-04-10',
         'Romeu',
@@ -118,3 +120,30 @@ INSERT INTO Trecos (
         'Jericoacoara',
         '2'
 	);
+
+-- Insere um  item para o usuário 1
+INSERT INTO Trecos ( 
+    `foto`,
+    `nome`, 
+    `descricao`, 
+    `localizacao`,
+    `user_id`
+	) VALUES (
+        'foto3.jpg',
+        'Luvas de frio',
+        'Luvas para esquentar a mão quando sentir frio',
+        'Rio de Janeiro',
+        '1'
+        );
+
+INSERT INTO Users (
+    `data_nascimento`,
+    `nome`,
+    `email`,
+    `senha`
+) VALUES (
+    '1945-03-31',
+    'Hildebrando Bravo',
+    'hilde@brando.com',
+    SHA1('fahuh2984928')
+);
