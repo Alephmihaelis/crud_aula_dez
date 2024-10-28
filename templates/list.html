@@ -1,0 +1,10 @@
+{% extends '_theme.html' %}
+
+{% block content %}
+
+{% for treco in trecos %}
+        <p>{{ treco.nome }}</p>
+        <p>{{ treco.descricao }}</p>
+{% endfor %}
+
+{% endblock %}
