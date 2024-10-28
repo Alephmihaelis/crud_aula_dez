@@ -13,8 +13,8 @@ USE trecosdb;
 CREATE TABLE Users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     data_nascimento DATE NOT NULL,
-    nome VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
+    nome VARCHAR(127) NOT NULL,
+    email VARCHAR(127) NOT NULL,
     senha VARCHAR(255) NOT NULL,
     status ENUM('on', 'off', 'del') DEFAULT 'on'
 );
