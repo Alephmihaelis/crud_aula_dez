@@ -39,10 +39,10 @@ INSERT INTO Users (
     email,
     senha
     ) VALUES (
-        '2000-28-02',
-        'Álefe',
-        'emailmeu@hotmail.com',
-        SHA1('123456')
+    '2000-28-02',
+    'Álefe',
+    'emailmeu@hotmail.com',
+    SHA1('123456')
 );
 
 INSERT INTO Trecos (
@@ -52,11 +52,11 @@ INSERT INTO Trecos (
     localizacao,
     user_id
     ) VALUES (
-        'foto.jpg',
-        'Treco Legal',
-        'Descrição do treco',
-        'São Paulo',
-        1
+    'foto.jpg',
+    'Treco Legal',
+    'Descrição do treco',
+    'São Paulo',
+    1
 );
 
 -- Vê todos os itens de um usuário
@@ -85,10 +85,10 @@ INSERT INTO Users (
 	email,
 	senha
 	) VALUES (
-        '2003-04-10',
-        'Romeu',
-        'romeu@vcnsabenemeu.com',
-        SHA1('48465456465')
+    '2003-04-10',
+    'Romeu',
+    'romeu@vcnsabenemeu.com',
+    SHA1('48465456465')
 );
 
 -- Insere o usuário Juliana
@@ -99,11 +99,11 @@ INSERT INTO Users (
 	senha,
 	status
 	) VALUES (
-        'Juliana Lima Abreu',
-        '1999-05-15',
-        'juliabr@abreu.com',
-        SHA1('1748736987r5'),
-        'off'
+    'Juliana Lima Abreu',
+    '1999-05-15',
+    'juliabr@abreu.com',
+    SHA1('1748736987r5'),
+    'off'
 );
 
 -- Insere um item para o user 2
@@ -114,11 +114,11 @@ INSERT INTO Trecos (
     `localizacao`,
     `user_id`
 	) VALUES (
-        'foto2.jpg',
-        'Teclado',
-        'Um K120 da Logitech',
-        'Jericoacoara',
-        '2'
+    'foto2.jpg',
+    'Teclado',
+    'Um K120 da Logitech',
+    'Jericoacoara',
+    '2'
 );
 
 -- Insere um  item para o usuário 1
@@ -129,11 +129,11 @@ INSERT INTO Trecos (
     `localizacao`,
     `user_id`
 	) VALUES (
-        'foto3.jpg',
-        'Luvas de frio',
-        'Luvas para esquentar a mão quando sentir frio',
-        'Rio de Janeiro',
-        '1'
+    'foto3.jpg',
+    'Luvas de frio',
+    'Luvas para esquentar a mão quando sentir frio',
+    'Rio de Janeiro',
+    '1'
 );
 
 INSERT INTO Users (
