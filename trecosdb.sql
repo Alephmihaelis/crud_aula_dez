@@ -43,7 +43,7 @@ INSERT INTO Users (
         'Álefe',
         'emailmeu@hotmail.com',
         SHA1('123456')
-    );
+);
 
 INSERT INTO Trecos (
     foto,
@@ -57,7 +57,7 @@ INSERT INTO Trecos (
         'Descrição do treco',
         'São Paulo',
         1
-    );
+);
 
 -- Vê todos os itens de um usuário
 SELECT * FROM Trecos
@@ -89,7 +89,7 @@ INSERT INTO Users (
         'Romeu',
         'romeu@vcnsabenemeu.com',
         SHA1('48465456465')
-        );
+);
 
 -- Insere o usuário Juliana
 INSERT INTO Users (
@@ -104,7 +104,7 @@ INSERT INTO Users (
         'juliabr@abreu.com',
         SHA1('1748736987r5'),
         'off'
-	);
+);
 
 -- Insere um item para o user 2
 INSERT INTO Trecos (
@@ -119,7 +119,7 @@ INSERT INTO Trecos (
         'Um K120 da Logitech',
         'Jericoacoara',
         '2'
-	);
+);
 
 -- Insere um  item para o usuário 1
 INSERT INTO Trecos ( 
@@ -134,14 +134,14 @@ INSERT INTO Trecos (
         'Luvas para esquentar a mão quando sentir frio',
         'Rio de Janeiro',
         '1'
-        );
+);
 
 INSERT INTO Users (
     `data_nascimento`,
     `nome`,
     `email`,
     `senha`
-) VALUES (
+    ) VALUES (
     '1945-03-31',
     'Hildebrando Bravo',
     'hilde@brando.com',
