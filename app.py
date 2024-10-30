@@ -50,8 +50,8 @@ def home():
         SELECT *
         FROM Trecos
         WHERE
-        user_id = %s
-        AND status != 'del'
+        `user_id` = %s
+        AND `status` != 'del'
         ORDER BY data DESC;
         '''
 
@@ -75,11 +75,11 @@ def login():
         print('\n\n\n', form, '\n\n\n')
         
         sql = '''
-        SELECT id, nome
+        SELECT `id`, `nome`
         FROM Users
-        WHERE email = %s
-        AND senha = SHA1(%s)
-        AND status = 'on';
+        WHERE `email` = %s
+        AND `senha` = SHA1(%s)
+        AND `status` = 'on';
         '''
         cur = mysql.connection.cursor()
         cur.execute(sql, (form['email'], form['password'], ))
@@ -127,11 +127,11 @@ def new():
 
         sql = '''
         INSERT INTO trecos (
-        user_id,
-        nome,
-        foto,
-        descricao,
-        localizacao
+        `user_id`,
+        `nome`,
+        `foto`,
+        `descricao`,
+        `localizacao`
         ) VALUES (
             %s, %s, %s, %s, %s)
         '''
@@ -156,9 +156,9 @@ def view(id):
     user['fname'] = user['name'].split()[0]
 
     sql = '''
-        SELECT id, data, foto, nome, descricao, localizacao
+        SELECT `id`, `data`, `foto`, `nome`, `descricao`, `localizacao`
         FROM Trecos
-        WHERE status = 'on' AND user_id = %s
+        WHERE `status` = 'on' AND `user_id` = %s
         '''
     cur = mysql.connection.cursor()
     cur.execute(sql, (user['id'],))
