@@ -1,0 +1,45 @@
+{% extends '_theme.html' %}
+
+{% block content %}
+
+<h2>Editar treco</h2>
+<p>Preencha os campos abaixo para editar seu treco.</p>
+
+{% if success %}
+<dialog open id="myDialog">
+    <h4>Legal!</h4>
+    <p>Seu novo treco foi editado!</p>
+    <form method="dialog">
+        <button>OK</button>
+    </form>
+</dialog>
+{% endif %}
+
+<form action="/edit/{{ treco.id }}" method="post">
+    <p>
+        <label for="nome">Nome:</label>
+        <input type="text" name="nome" id="nome" required minlength="3" maxlength="127" value="{{ treco.nome }}">
+    </p>
+
+    <p>
+        <label for="foto">URL atual da foto:</label>
+        <img src="{{ treco.foto }}" alt="{{ treco.nome }}">
+        <input type="url" name="foto" id="foto" value="{{ treco.foto }}">
+   </p>
+
+    <p>
+        <label for="descricao">Descrição:</label>
+        <textarea name="descricao" id="descricao" minlength="3" value="{{ treco.descricao }}"></textarea>
+    </p>
+
+    <p>
+        <label for="localizacao">Localização:</label>
+        <input type="text" name="localizacao" id="localizao" minlength="2" value="{{ treco.localizacao }}">
+    </p>
+
+    <p>
+        <button type="submit">Atualizar</button>
+    </p>
+</form>
+
+{% endblock %}

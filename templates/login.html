@@ -5,15 +5,25 @@
 <h2>Logue-se</h2>
 <p>Você precisa se logar para operar sua coleção!</p>
 
+{% if error %}
+<dialog open id="myDialog">
+    <h4>Oooops!</h4>
+    <p>Usuário e/ou senha inválido.</p>
+    <form method="dialog">
+        <button>OK</button>
+    </form>
+</dialog>
+{% endif %}
+
 <form action="/login" method="post" id="login">
 
     <p>
-        <label for="email">E-mail: </label>
+        <label for="email">E-mail:</label>
         <input type="email" name="email" id="email" required>
     </p>
 
     <p>
-        <label for="password">Senha: </label>
+        <label for="password">Senha:</label>
         <input type="password" name="password" id="password" required minlength="5" maxlength="25">
     </p>
 
@@ -22,6 +32,7 @@
     </p>
 
 </form>
+
 
 {% if error %}
 <dialog open id="myDialog">

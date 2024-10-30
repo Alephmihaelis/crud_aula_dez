@@ -17,10 +17,9 @@
         {% if user %}
 
         <nav>
-            <button onclick="location.href='/login'">Página inicial</button>
             <button onclick="location.href='/'">Listar trecos</button>
             <button onclick="location.href='/new'">Novo treco</button>
-            <span>Olá, {{ user.fname }}!</span>
+            <span>Olá, {{ user.fname }}! <button onclick ="if(confirm('Tem certeza de que deseja sair?')) location.href='/logout'; return false" title="Sair">[X]</button></span>
         </nav>
 
         {% endif %}
@@ -30,6 +29,10 @@
         </main>
 
         <footer><span>&copy;</span> Copyleft 2024 Mihael</footer>
+        <script>
+            // Evita o reenvio dos formulários ao atualizar a página
+            if (window.history.replaceState) window.history.replaceState(null, null, window.location.href);
+        </script>
     </div>
 
 </body>

@@ -16,14 +16,6 @@ app.config['MYSQL_CHARSET'] = 'utf8mb4'
 
 mysql = MySQL(app)
 
-def get_cookie():
-    cookie = request.cookies.get('user_data')
-    if cookie is None:
-        return redirect(url_for('login'))
-    user = json.loads(cookie)
-    user['fname'] = g.user['name'].split()[0]
-    return user
-
 @app.before_request
 def before_request():
     cur = mysql.connection.cursor()
@@ -34,17 +26,20 @@ def before_request():
     cur.execute("SET lc_time_names = 'pt_BR'")
     cur.close()
 
-    if request.endpoint != 'login':
-        cookie = request.cookies.get('user_data')
-        if cookie is None:
-            return redirect(url_for('login'))
-        g.user = json.loads(cookie)
-        g.user['fname'] = g.user['name'].split()[0]
-
 @app.route('/')
 def home():
 
-    user = get_cookie()
+    edit = request.args.get('edit')
+
+    delete = request.args.get('delete')
+
+    cookie = request.cookies.get('user_data')
+
+    if cookie == None:
+        return redirect(f"{url_for('login')}")
+    
+    user = json.loads(cookie)
+    user['fname'] = user['name'].split()[0]
 
     sql = '''
         SELECT *
@@ -54,13 +49,12 @@ def home():
         AND `status` != 'del'
         ORDER BY data DESC;
         '''
-
     cur = mysql.connection.cursor()
-    cur.execute(sql, (g.user['id'],))
+    cur.execute(sql, (user['id'],))
     trecos = cur.fetchall()
     cur.close()
 
-    return render_template('home.html', trecos=trecos, user=g.user)
+    return render_template('home.html', trecos=trecos, user=user, edit=edit, delete=delete)
 
 @app.route('/login', methods=['GET', 'POST'])
 
@@ -71,8 +65,6 @@ def login():
     if request.method == 'POST':
 
         form = dict(request.form)
-
-        print('\n\n\n', form, '\n\n\n')
         
         sql = '''
         SELECT `id`, `nome`
@@ -86,10 +78,10 @@ def login():
         user = cur.fetchone()
         cur.close()
 
-#        print('\n\n\n', g.user, '\n\n\n')
-
         if user != None:
+            
             resp = make_response(redirect(url_for('home')))
+            
             cookie_data = {
             'id': user['id'],
             'name': user['nome']
@@ -165,8 +157,83 @@ def view(id):
     treco = cur.fetchone()
     cur.close()
 
-    return render_template('view.html', treco=treco)
+    return render_template('view.html', treco=treco, user=user)
 
+@app.route('/edit/<id>', methods=['GET', 'POST'])
+def edit(id):
+
+    cookie = request.cookies.get('user_data')
+
+    if cookie == None:
+        return redirect(f"{url_for('login')}")
+
+    user = json.loads(cookie)
+    user['fname'] = user['name'].split()[0]
+
+    if request.method == 'POST':
+
+        form = dict(request.form)
+
+        sql = '''
+            UPDATE Trecos SET 
+                foto = %s,
+                nome = %s,
+                descricao = %s,
+                localizacao = %s
+            WHERE status = 'on'
+                AND user_id = %s
+                AND id = %s
+        '''
+        cur = mysql.connection.cursor()
+        cur.execute(sql, (form['foto'], form['nome'], form['descricao'], form['localizacao'], user['id'], id,))
+        mysql.connection.commit()
+        cur.close()
+
+        return redirect(url_for('home', edit=True))
+
+    sql = '''
+        SELECT id, data, foto, nome, descricao, localizacao
+        FROM Trecos
+        WHERE status = 'on' AND user_id = %s AND id = %s
+    '''
+    cur = mysql.connection.cursor()
+    cur.execute(sql, (user['id'], id,))
+    treco = cur.fetchone()
+    cur.close()
+
+    return render_template('edit.html', user=user, treco=treco)
+
+@app.route('/delete/<id>')
+def delete(id):
+
+    cookie = request.cookies.get('user_data')
+    if cookie == None:
+        return redirect(url_for('login'))
+    user = json.loads(cookie)
+    user['fname'] = user['name'].split()[0]
+
+    sql = '''
+        UPDATE trecos SET
+            status = 'del'
+        WHERE user_id = %s
+            AND id = %s
+    '''
+    cur = mysql.connection.cursor()
+    cur.execute(sql, (user['id'], id,))
+    mysql.connection.commit()
+    cur.close()
+
+    return redirect(url_for('home', delete=True))
+
+@app.route('/logout')
+def logout():
+
+    resp = make_response(redirect(url_for('login')))
+
+    resp.set_cookie('user_data', '', expires=0)
+
+    return resp
+    
 
 if __name__ == '__main__':
     app.run(debug=True)

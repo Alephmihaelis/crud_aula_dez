@@ -4,9 +4,30 @@
 
 <h3>Sua lista de trecos</h3>
 
+{% if delete %}
+<dialog open id="myDialog">
+    <h4>Legal!</h4>
+    <p>Seu treco foi apagado!</p>
+    <form method="dialog">
+        <button>OK</button>
+    </form>
+</dialog>
+
+{% endif %}
+
+{% if edit %}
+<dialog open id="myDialog">
+    <h4>Legal!</h4>
+    <p>Seu treco foi editado!</p>
+    <form method="dialog">
+        <button>OK</button>
+    </form>
+</dialog>
+{% endif %}
+
 <div class="list">
 
-{% for treco in trecos %}
+    {% for treco in trecos %}
 
 <div class="item">
     <img src="{{ treco.foto }}" alt="{{ treco.nome }}">
@@ -14,7 +35,7 @@
         <h4>{{ treco.nome }}</h4>
         <button onclick="location.href='/view/{{ treco.id }}'">Ver</button>
         <button onclick="location.href='/edit/{{ treco.id }}'">Editar</button>
-        <button onclick="location.href='/delete/{{ treco.id }}'">Apagar</button>
+        <button onclick="if(confirm('Tem certeza?')) location.href='/delete/{{ treco.id }}'; return false">Apagar</button>
     </div>
 </div>
 
