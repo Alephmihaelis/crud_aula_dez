@@ -161,7 +161,7 @@ def view(id):
         WHERE status = 'on' AND user_id = %s
         '''
     cur = mysql.connection.cursor()
-    cur.execute(sql, (user['id'], ))
+    cur.execute(sql, (user['id'],))
     treco = cur.fetchone()
     cur.close()
 
