@@ -2,12 +2,43 @@
 
 {% block content %}
 
-<nav>
-    <button onclick="location.href='/login'">Página inicial</button>
-    <button onclick="location.href='/'">Listar trecos</button>
-</nav>
-
 <h2>Novo treco</h2>
 <p>Preencha os campos abaixo para cadastrar um novo treco.</p>
+
+{% if success %}
+<dialog open id="myDialog">
+    <h4>Legal!</h4>
+    <p>Seu novo treco foi cadastrado!</p>
+    <form method="dialog">
+        <button>OK</button>
+    </form>
+</dialog>
+{% endif %}
+
+<form action="/new" method="post">
+    <p>
+        <label for="nome">Nome: </label>
+        <input type="text" name="nome" id="nome" required minlength="3" maxlength="127">
+    </p>
+
+    <p>
+        <label for="foto">URL da foto: </label>
+        <input type="url" name="foto" id="foto" required>
+   </p>
+
+    <p>
+        <label for="descricao">Descrição: </label>
+        <textarea name="descricao" id="descricao" required minlength="3"></textarea>
+    </p>
+
+    <p>
+        <label for="localizacao">Localização: </label>
+        <input type="text" name="localizacao" id="localizao" required minlength="2">
+    </p>
+
+    <p>
+        <button type="submit">Cadastrar novo treco</button>
+    </p>
+</form>
 
 {% endblock %}

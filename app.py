@@ -112,6 +112,8 @@ def login():
 @app.route('/new', methods=['GET', 'POST'])
 def new():
 
+    sucess = False
+
     cookie = request.cookies.get('user_data')
 
     if cookie == None:
@@ -120,7 +122,51 @@ def new():
     user = json.loads(cookie)
     user['fname'] = user['name'].split()[0]
 
-    return render_template('new.html', user=user)
+    if request.method == 'POST':
+        form = dict(request.form)
+
+        sql = '''
+        INSERT INTO trecos (
+        user_id,
+        nome,
+        foto,
+        descricao,
+        localizacao
+        ) VALUES (
+            %s, %s, %s, %s, %s)
+        '''
+        cur = mysql.connection.cursor()
+        cur.execute(sql, (user['id'], form['nome'], form['foto'], form['descricao'], form['localizacao'],))
+        mysql.connection.commit()
+        cur.close()
+
+        sucess = True
+
+    return render_template('new.html', user=user, sucess=sucess)
+
+@app.route('/view/<id>')
+def view(id):
+
+    cookie = request.cookies.get('user_data')
+
+    if cookie == None:
+        return redirect(f"{url_for('login')}")
+
+    user = json.loads(cookie)
+    user['fname'] = user['name'].split()[0]
+
+    sql = '''
+        SELECT id, data, foto, nome, descricao, localizacao
+        FROM Trecos
+        WHERE status = 'on' AND user_id = %s
+        '''
+    cur = mysql.connection.cursor()
+    cur.execute(sql, (user['id'], ))
+    treco = cur.fetchone()
+    cur.close()
+
+    return render_template('view.html', treco=treco)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

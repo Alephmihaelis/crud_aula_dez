@@ -1,0 +1,20 @@
+{% extends '_theme.html' %}
+
+{% block content %}
+
+<div id="wrap">
+    <nav>
+        <button onclick="location.href='/'">Listagem geral dos trecos</button>
+    </nav>
+
+<h3>{{ treco.nome }}</h3>
+<img src="{{ treco.foto }}" alt="{{ treco.nome }}" width="20%">
+&nbsp;
+<div>{{ treco.descricao }}</div>
+<ul>
+    <li>Cadastrada em {{ treco.data }}</li>
+    <li>Guardado em {{ treco.localizacao }}</li>
+</ul>
+</div>
+
+{% endblock %}
