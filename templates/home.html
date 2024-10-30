@@ -1,0 +1,25 @@
+{% extends '_theme.html' %}
+
+{% block content %}
+
+<h3>Sua Lista de Trecos</h3>
+
+<div class="list">
+
+{% for thing in things %}
+
+<div class="item">
+    <img src="{{ thing.t_photo }}" alt="{{ thing.t_name }}">
+    <div>
+        <h4>{{ thing.t_name }}</h4>
+        <button>Ver</button>
+        <button>Editar</button>
+        <button>Apagar</button>
+    </div>
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

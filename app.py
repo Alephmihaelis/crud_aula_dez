@@ -34,7 +34,9 @@ def home():
     if cookie == None:
         return redirect(f"{url_for('login')}")
 
-    user_id = '2'
+    user = json.loads(cookie)
+    user['fname'] = user['name'].split()[0]
+
     sql = '''
         SELECT *
         FROM Trecos
@@ -43,8 +45,9 @@ def home():
         AND status != 'del'
         ORDER BY data DESC;
             '''
+
     cur = mysql.connection.cursor()
-    cur.execute(sql, (user_id,))
+    cur.execute(sql, (user['id'],))
     trecos = cur.fetchall()
     cur.close()
 
@@ -59,6 +62,8 @@ def login():
     if request.method == 'POST':
 
         form = dict(request.form)
+
+        print('\n\n\n', form, '\n\n\n')
         
         sql = '''
         SELECT id, nome
@@ -67,21 +72,27 @@ def login():
         AND senha = SHA1(%s)
         AND status = 'on';
         '''
-
         cur = mysql.connection.cursor()
         cur.execute(sql, (form['email'], form['password'], ))
         user = cur.fetchone()
         cur.close()
 
+        print('\n\n\n', user, '\n\n\n')
+
         resp = make_response(redirect(url_for('home')))
         if user != None:
+            
             cookie_data = {
             'id': user['id'],
             'name': user['nome']
             }
+
+            print('\n\n\nCookie:', cookie_data, '\n\n\n')
+            # Data em que o cookie espira
             expires = datetime.now() + timedelta(days=365)
+            # Adiciona o cookie à página
             resp.set_cookie('user_data', json.dumps(
-            cookie_data), expires=expires)
+                cookie_data), expires=expires)
 
         return resp
 

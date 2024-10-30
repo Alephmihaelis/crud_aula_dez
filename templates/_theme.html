@@ -1,19 +1,36 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/_theme.css">
     <title>Cadastro de Trecos</title>
 </head>
+
 <body>
+    <div id="wrap">
+        <header>
+            <h1>Cadastro de Trecos</h1>
+        </header>
 
-    <h2>Cadastro de Trecos</h2>
+        {% if user %}
 
-    {% block content %}
+        <nav>
+            <button>Listar</button>
+            <button>Novo</button>
+            <span>Olá {{ user.fname }}!</span>
+        </nav>
 
-    {% endblock %}
+        {% endif %}
 
-    <footer>&copy; 2024 Traquitana</footer>
-    
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer><span>&copy;</span> Copyleft 2024 Mihael</footer>
+    </div>
+
 </body>
+
 </html>
