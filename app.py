@@ -73,14 +73,14 @@ def login():
         user = cur.fetchone()
         cur.close()
 
+        resp = make_response(redirect(url_for('home')))
         if user != None:
-            resp = make_response(redirect(url_for('home')))
             cookie_data = {
             'id': user['id'],
             'name': user['nome']
-        }
-        expires = datetime.now() + timedelta(day=365)
-        resp.set_cookie('user_data', json.dumps(
+            }
+            expires = datetime.now() + timedelta(days=365)
+            resp.set_cookie('user_data', json.dumps(
             cookie_data), expires=expires)
 
         return resp
