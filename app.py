@@ -112,7 +112,15 @@ def login():
 @app.route('/new', methods=['GET', 'POST'])
 def new():
 
-    return render_template('new.html')
+    cookie = request.cookies.get('user_data')
+
+    if cookie == None:
+        return redirect(f"{url_for('login')}")
+
+    user = json.loads(cookie)
+    user['fname'] = user['name'].split()[0]
+
+    return render_template('new.html', user=user)
 
 if __name__ == '__main__':
     app.run(debug=True)
