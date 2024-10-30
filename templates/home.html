@@ -2,19 +2,19 @@
 
 {% block content %}
 
-<h3>Sua Lista de Trecos</h3>
+<h3>Sua lista de trecos</h3>
 
 <div class="list">
 
-{% for thing in things %}
+{% for treco in trecos %}
 
 <div class="item">
-    <img src="{{ thing.t_photo }}" alt="{{ thing.t_name }}">
+    <img src="{{ treco.foto }}" alt="{{ treco.nome }}">
     <div>
-        <h4>{{ thing.t_name }}</h4>
-        <button>Ver</button>
-        <button>Editar</button>
-        <button>Apagar</button>
+        <h4>{{ treco.nome }}</h4>
+        <button onclick="location.href='/view/{{ treco.id }}'">Ver</button>
+        <button onclick="location.href='/edit/{{ treco.id }}'">Editar</button>
+        <button onclick="location.href='/delete/{{ treco.id }}'">Apagar</button>
     </div>
 </div>
 

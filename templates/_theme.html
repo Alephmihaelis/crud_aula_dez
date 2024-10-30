@@ -11,15 +11,16 @@
 <body>
     <div id="wrap">
         <header>
-            <h1>Cadastro de Trecos</h1>
+            <h1>Cadastro de trecos</h1>
         </header>
 
         {% if user %}
 
         <nav>
-            <button>Listar</button>
-            <button>Novo</button>
-            <span>Olá {{ user.fname }}!</span>
+            <button onclick="location.href='/login'">Página inicial</button>
+            <button onclick="location.href='/'">Listar trecos</button>
+            <button onclick="location.href='/new'">Novo treco</button>
+            <span>Olá, {{ user.fname }}!</span>
         </nav>
 
         {% endif %}

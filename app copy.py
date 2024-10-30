@@ -16,13 +16,7 @@ app.config['MYSQL_CHARSET'] = 'utf8mb4'
 
 mysql = MySQL(app)
 
-def get_cookie():
-    cookie = request.cookies.get('user_data')
-    if cookie is None:
-        return redirect(url_for('login'))
-    user = json.loads(cookie)
-    user['fname'] = g.user['name'].split()[0]
-    return user
+g.user = {}
 
 @app.before_request
 def before_request():
@@ -34,17 +28,16 @@ def before_request():
     cur.execute("SET lc_time_names = 'pt_BR'")
     cur.close()
 
-    if request.endpoint != 'login':
-        cookie = request.cookies.get('user_data')
-        if cookie is None:
-            return redirect(url_for('login'))
-        g.user = json.loads(cookie)
-        g.user['fname'] = g.user['name'].split()[0]
+    cookie = request.cookies.get('user_data')
+
+    if cookie == None:
+        return redirect(f"{url_for('login')}")
+
+    user = json.loads(cookie)
+    user['fname'] = user['name'].split()[0]
 
 @app.route('/')
 def home():
-
-    user = get_cookie()
 
     sql = '''
         SELECT *
@@ -56,11 +49,11 @@ def home():
         '''
 
     cur = mysql.connection.cursor()
-    cur.execute(sql, (g.user['id'],))
+    cur.execute(sql, (user['id'],))
     trecos = cur.fetchall()
     cur.close()
 
-    return render_template('home.html', trecos=trecos, user=g.user)
+    return render_template('home.html', trecos=trecos, user=user)
 
 @app.route('/login', methods=['GET', 'POST'])
 
@@ -86,7 +79,7 @@ def login():
         user = cur.fetchone()
         cur.close()
 
-#        print('\n\n\n', g.user, '\n\n\n')
+        print('\n\n\n', user, '\n\n\n')
 
         if user != None:
             resp = make_response(redirect(url_for('home')))

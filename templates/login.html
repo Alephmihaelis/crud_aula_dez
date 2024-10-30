@@ -5,7 +5,7 @@
 <h2>Logue-se</h2>
 <p>Você precisa se logar para operar sua coleção!</p>
 
-<form action="/login" method="post">
+<form action="/login" method="post" id="login">
 
     <p>
         <label for="email">E-mail: </label>
@@ -22,5 +22,16 @@
     </p>
 
 </form>
+
+{% if error %}
+<dialog open id="myDialog">
+    <h4>Oooops!</h4>
+    <p>Usuário e/ou senha inválido(s).</p>
+    <form method="dialog">
+        <button>Tentar novamente</button>
+    </form>
+</dialog>
+
+{% endif %}
 
 {% endblock %}
