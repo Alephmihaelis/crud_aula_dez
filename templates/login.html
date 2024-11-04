@@ -6,13 +6,14 @@
 <p>Você precisa se logar para operar sua coleção!</p>
 
 {% if error %}
-<dialog open id="myDialog">
+<dialog id="myDialog">
     <h4>Oooops!</h4>
     <p>Usuário e/ou senha inválido.</p>
     <form method="dialog">
         <button>OK</button>
     </form>
 </dialog>
+<script>myDialog.showModal()</script>
 {% endif %}
 
 <form action="/login" method="post" id="login">
@@ -32,17 +33,5 @@
     </p>
 
 </form>
-
-
-{% if error %}
-<dialog open id="myDialog">
-    <h4>Oooops!</h4>
-    <p>Usuário e/ou senha inválido(s).</p>
-    <form method="dialog">
-        <button>Tentar novamente</button>
-    </form>
-</dialog>
-
-{% endif %}
 
 {% endblock %}
