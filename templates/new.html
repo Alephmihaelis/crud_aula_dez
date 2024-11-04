@@ -6,13 +6,14 @@
 <p>Preencha os campos abaixo para cadastrar um novo treco.</p>
 
 {% if success %}
-<dialog open id="myDialog">
+<dialog id="myDialog">
     <h4>Legal!</h4>
     <p>Seu novo treco foi cadastrado!</p>
     <form method="dialog">
         <button>OK</button>
     </form>
 </dialog>
+<script>myDialog.showModal()</script>
 {% endif %}
 
 <form action="/new" method="post" id="newThing">

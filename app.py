@@ -3,6 +3,9 @@ from datetime import datetime, timedelta
 import subprocess
 from flask import Flask, json, make_response, redirect, render_template, request, url_for, g
 from flask_mysqldb import MySQL
+import random
+import string
+import requests
 
 app = Flask(__name__)
 
@@ -16,12 +19,12 @@ app.config['MYSQL_USE_UNICODE'] = True
 app.config['MYSQL_CHARSET'] = 'utf8mb4'
 
 mysql = MySQL(app)
-'''
-# API para enviar e-mail: consertá-la depois
 
+# API para enviar e-mail: consertá-la depois
+'''
 def send_email(email_to, subject, content):
     url = ""
-    api_key = "inserir_api"
+    api_key = ""
     # email_to = "" # Destinatário
     email_from = "" # Sender validado no Sendgrid
     # subject = "Sending with SendGrid is Fun"
@@ -128,7 +131,7 @@ def login():
 @app.route('/new', methods=['GET', 'POST'])
 def new():
 
-    sucess = False
+    success = False
 
     cookie = request.cookies.get('user_data')
 
@@ -155,10 +158,9 @@ def new():
         cur.execute(sql, (user['id'], form['nome'], form['foto'], form['descricao'], form['localizacao'],))
         mysql.connection.commit()
         cur.close()
+        success = True
 
-        sucess = True
-
-    return render_template('new.html', user=user, sucess=sucess)
+    return render_template('new.html', user=user, success=success)
 
 @app.route('/view/<id>')
 def view(id):
@@ -301,6 +303,56 @@ def newUser():
 
     return render_template('newuser.html', feedback=feedback, form=form)
 
+@app.route('/profile')
+def profile():
+
+    cookie = request.cookies.get('user_data')
+    if cookie == None:
+        return redirect(url_for('login'))
+    user = json.loads(cookie)
+    user['fname'] = user['name'].split()[0]
+
+    sql = '''
+    SELECT *
+    FROM Users
+    WHERE id = %s
+        AND status = 'on'
+    '''
+    cur = mysql.connection.cursor()
+    cur.execute(sql, (user['id'],))
+    userdata = cur.fetchone()
+    cur.close()
+
+    del userdata['senha']
+
+    print('\n\n\n', userdata, '\n\n\n')
+
+    return render_template('profile.html', user=user, userdata=userdata)
+
+@app.route('/sendpass', methods=['GET', 'POST'])
+def sendpass():
+
+
+    if request.method == 'POST':
+
+        form = dict(request.form)
+        sql = '''
+            SELECT id, email, nome
+            FROM Users
+            WHERE email = %s
+                AND status != 'del'
+            '''
+        
+        cur = mysql.connection.cursor()
+        cur.execute(sql, (form['email'],))
+        userdata = cur.fetchone()
+        cur.close()
+
+        feedback = ''
+
+# Procurar o if userdata != None
+
+    return render_template('sendpass.html', feedback=feedback)
 
 if __name__ == '__main__':
     app.run(debug=True)

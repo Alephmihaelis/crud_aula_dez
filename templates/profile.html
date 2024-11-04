@@ -1,0 +1,18 @@
+
+{% extends '_theme.html' %}
+
+{% block content %}
+
+<h2>Perfil de {{ user.fname }}</h2>
+
+<p>Seu nome: {{ userdata.nome }}</p>
+<p>Seu e-mail: {{ userdata.email }}</p>
+<p>Sua data de nascimento: {{ userdata.data_nascimento }}</p>
+
+<p class="center">
+    <button onclick="location.href='/logout'">
+Logout / Sair
+    </button>
+</p>
+
+{% endblock %}
