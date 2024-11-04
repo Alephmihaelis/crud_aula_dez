@@ -16,7 +16,6 @@ app.config['MYSQL_USE_UNICODE'] = True
 app.config['MYSQL_CHARSET'] = 'utf8mb4'
 
 mysql = MySQL(app)
-#####asfsadsadsadasf###
 '''
 # API para enviar e-mail: consertá-la depois
 
