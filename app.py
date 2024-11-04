@@ -1,5 +1,6 @@
 
 from datetime import datetime, timedelta
+import subprocess
 from flask import Flask, json, make_response, redirect, render_template, request, url_for, g
 from flask_mysqldb import MySQL
 
@@ -15,6 +16,30 @@ app.config['MYSQL_USE_UNICODE'] = True
 app.config['MYSQL_CHARSET'] = 'utf8mb4'
 
 mysql = MySQL(app)
+#####asfsadsadsadasf###
+'''
+# API para enviar e-mail: consertá-la depois
+
+def send_email(email_to, subject, content):
+    url = ""
+    api_key = "inserir_api"
+    # email_to = "" # Destinatário
+    email_from = "" # Sender validado no Sendgrid
+    # subject = "Sending with SendGrid is Fun"
+    # content = "and easy to do anywhere, even with cURL"
+    
+    curl_command = [
+        "curl",
+        "--request", "POST",
+        "--url", url,
+        "--header", f"Authorization: Bearer {api_key}",
+        "--header", "Content-Type: application/json",
+        "--data", f'{{"personalizations": [{{"to": [{{"email": "{email_to}"}}]}}],"from": {{"email": "{email_from}"}}, "subject": "{subject}", "content": [{{"type": "text/plain", "value": "{content}"}}]}}'
+    ]
+    
+    result = subprocess.run(curl_command, capture_output=True, text=True)
+    return result.stdout, result.stderr
+'''
 
 @app.before_request
 def before_request():
@@ -233,7 +258,50 @@ def logout():
     resp.set_cookie('user_data', '', expires=0)
 
     return resp
-    
+
+@app.route('/newuser', methods=['GET', 'POST'])
+def newUser():
+
+    cookie = request.cookies.get('user_data')
+    if cookie != None:
+        return redirect(url_for('home'))
+
+    feedback = ''
+    form = {}
+
+    if request.method == 'POST':
+
+        form = dict(request.form)
+
+        print('\n\n\n', form, '\n\n\n')
+
+        sql = '''
+            SELECT count(id) AS total
+            FROM Users
+            WHERE email = %s
+                AND status != 'del'
+        '''
+        cur = mysql.connect.cursor()
+        cur.execute(sql, (form['email'], ))
+        total = int(cur.fetchone()['total'])
+        cur.close()
+
+        if total == 0:
+            sql = '''
+            INSERT INTO Users (nome, email, data_nascimento, senha) VALUES (%s, %s, %s, SHA1(%s))
+        '''
+            cur = mysql.connection.cursor()
+            cur.execute(sql, (form['nome'], form['email'], form['data_nascimento'], form['senha'],))
+            mysql.connection.commit()
+            cur.close()
+
+            feedback = 'Success'
+        else:
+            form['email'] = ''
+            feedback = 'Error'
+
+    return render_template('newuser.html', feedback=feedback, form=form)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

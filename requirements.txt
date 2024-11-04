@@ -9,3 +9,4 @@ MarkupSafe==2.1.5
 mysqlclient==2.2.4
 PyMySQL==1.1.1
 Werkzeug==3.0.4
+#teste
